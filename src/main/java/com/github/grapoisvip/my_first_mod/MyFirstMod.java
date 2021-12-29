@@ -54,7 +54,7 @@ public class MyFirstMod
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
         
         
-        LOGGER.info(BOW.get().getCreativeTabs());
+        LOGGER.info(BOW.get().getDescriptionId());
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
