@@ -1,16 +1,15 @@
 package com.github.grapoisvip.my_first_mod;
 
-import net.minecraft.block.AbstractBlock;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -18,43 +17,35 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.github.grapoisvip.my_first_mod.core.BlockInit;
+import com.github.grapoisvip.my_first_mod.core.ItemInit;
+
 import java.util.stream.Collectors;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(MyFirstMod.MOD_ID)
 public class MyFirstMod
 {
 	public static final String MOD_ID = "my_first_mod";
-	
-    // Directly reference a log4j logger.
-	public static final RegistryObject<Item> BOW = RegistryObject.of(new ResourceLocation("minecraft:bow"), ForgeRegistries.ITEMS);
     private static final Logger LOGGER = LogManager.getLogger();
     
-    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MOD_ID);
-    public static final RegistryObject<Block> ROCK_BLOCK = BLOCKS.register("rock", () -> new Block(AbstractBlock.Properties.of(Material.STONE)));
+    
     
     public MyFirstMod() {
-        // Register the setup method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        // Register the enqueueIMC method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
-        // Register the processIMC method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
-        // Register the doClientStuff method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+    	
+    	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+    	bus.addListener(this::setup);
+    	bus.addListener(this::enqueueIMC);
+    	bus.addListener(this::processIMC);
+    	bus.addListener(this::doClientStuff);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
-        BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        
-        //LOGGER.info("Registry name:" + ROCK_BLOCK.get().getRegistryName());
-        //LOGGER.info("DescriptionID:" + ROCK_BLOCK.get().getDescriptionId());
+        BlockInit.BLOCKS.register(bus);
+        ItemInit.ITEMS.register(bus);
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -63,12 +54,14 @@ public class MyFirstMod
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
         
-        LOGGER.info(BOW.get().getDescriptionId());
+        RenderType cutout = RenderType.cutout();
+        RenderTypeLookup.setRenderLayer(BlockInit.ANDROANTHUS_SAPLING.get(), cutout);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         // do something that can only be done on the client
-        LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().options);
+    	
+      
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)
