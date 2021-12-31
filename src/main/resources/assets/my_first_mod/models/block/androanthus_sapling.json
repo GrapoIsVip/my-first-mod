@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "my_first_mod:block/androanthus_sapling"
+  }
+}

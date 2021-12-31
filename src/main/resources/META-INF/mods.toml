@@ -11,14 +11,14 @@ description='''
 	This is my first mod.
 '''
 
-[[dependencies.examplemod]]    
+[[dependencies.my_first_mod]]    
     modId="forge"
     mandatory=true
     versionRange="[36,)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.examplemod]]
+[[dependencies.my_first_mod]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.16.5,1.17)"
