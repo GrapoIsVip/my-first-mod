@@ -23,5 +23,7 @@ public class ItemInit {
 			() -> new BlockItem(BlockInit.ANDROANTHUS_SAPLING.get(), new Properties().tab(ItemGroup.TAB_DECORATIONS)));
 	
 	public static final RegistryObject<Item> SCREWDRIVER_TOOL = ITEMS.register("screwdriver_tool",
-			() -> new ToolItem(1f, 0, ItemTier.IRON, null, new Properties().tab(ItemGroup.TAB_TOOLS)));
+			() -> new Item(new Properties()
+					.tab(ItemGroup.TAB_TOOLS)
+					));
 }
