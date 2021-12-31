@@ -1,0 +1,4 @@
+{
+	"parent": "minecraft:item/shears",
+	"textures": { "layer0": "my_first_mod:item/screwdriver_tool" }
+}
